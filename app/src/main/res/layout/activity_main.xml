@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_send_rx2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送Rx数据"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_send_rx2_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用map操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用zip操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_2"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_2"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用concat操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_3"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_3"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用flatMap操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_4"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_4"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用concatMap操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_5"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_5"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用distinct操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_6"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_6"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用filter操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_7"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_7"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用buffer操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_8"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_8"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用timer操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_9"
+        app:layout_constraintLeft_toLeftOf="@id/btn_send_rx2_9"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用interval操作符"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用doOnNext操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_11"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_11"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用skip操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_12"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_12"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用take操作符"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_13"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_13"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用Single"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_14"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_14"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用debounce"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_15"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_15"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用defer"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_16"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_16"/>
+
+
+    <Button
+        android:id="@+id/btn_send_rx2_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用last"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_17"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_17"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用merge"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_18"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_18"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用reduce"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_19"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_19"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用scan"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_send_rx2_22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用window"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send_rx2_21"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_send_rx2_21"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
