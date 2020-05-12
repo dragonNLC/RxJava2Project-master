@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         btnSendRx2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable
+                Observable//观察者模式
                         .create(new ObservableOnSubscribe<Integer>() {
                             @Override
                             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                                 emitter.onNext(2);
                                 Log.e("TAG", "observable emit 3");
                                 emitter.onNext(3);
-                                emitter.onComplete();
+                                emitter.onComplete();//使用onComplete后，onNext方法将无法再接受数据
                                 Log.e("TAG", "observable emit 4");
                                 emitter.onNext(4);
                             }
@@ -108,14 +108,14 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSubscribe(Disposable d) {
                                 Log.e("TAG", "onSubscribe isDisposed： " + d.isDisposed());
-                                disposable = d;
+                                disposable = d;//支持使用Disposable中断请求
                             }
 
                             @Override
                             public void onNext(Integer integer) {
                                 Log.e("TAG", "onNet value: " + integer);
                                 if (integer == 2) {
-                                    disposable.dispose();
+                                    disposable.dispose();//使用dispose中断数据传输
                                     Log.e("TAG", "onNext isDisposed： " + disposable.isDisposed());
                                 }
                             }
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onError(Throwable e) {
                                 e.printStackTrace();
                             }
-
+                            //onError与onComplete只会调用其中某一个
                             @Override
                             public void onComplete() {
                                 Log.e("TAG", "onComplete");
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                             //发送线程或阻塞等到处理线程结束之后再处理下一个数据
                             .map(new Function<Integer, String>() {
                                 @Override
-                                public String apply(Integer integer) throws Exception {
+                                public String apply(Integer integer) throws Exception {//使用map，可以将一种数据转换成另一种数据
                                     Thread.sleep(4 * 1000);
                                     Log.e("TAG", "处理数据");
                                     return "This is result " + integer;
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
-                Observable
+                Observable//使用zpi，可以将两个observable的数据合并成一个，受最少数据的observable影响
                         .zip(getStringObservable(), getIntObservable(), new BiFunction<String, Integer, String>() {
                             @Override
                             public String apply(String o, Integer o2) throws Exception {
@@ -224,7 +224,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnSendRx24.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//concat，可以合并两个Observable成一个，并且输出
+                //可以用作在本地数据缓存与网络数据获取中，因为concat只有在上一个调用了onComplete后才会执行下一个Observable，
+                // 所以，可以用来作为处理本地缓存数据与网络数据
                 Disposable disposable = Observable.concat(Observable.just(1, 2, 3), Observable.just(4, 5, 6))
                         .subscribe(new Consumer<Integer>() {
                             @Override
@@ -242,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
                         .flatMap(new Function<Integer, ObservableSource<String>>() {
                             @Override
                             public ObservableSource<String> apply(Integer integer) throws Exception {
+                                //使用flatMap，可以将list分发出去，flatmap不会保证顺序
                                 List<String> list = new ArrayList<>();
                                 for (int i = 0; i < 3; i++) {
                                     list.add("I am value " + integer);
@@ -265,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
                 Disposable disposable = Observable.just(1, 2, 3)
                         .concatMap(new Function<Integer, ObservableSource<String>>() {
                             @Override
-                            public ObservableSource<String> apply(Integer integer) throws Exception {
+                            public ObservableSource<String> apply(Integer integer) throws Exception {//concatmap的作用与flatmap一致，但是顺序会按照实际的顺序
                                 List<String> list = new ArrayList<>();
                                 for (int i = 0; i < 3; i++) {
                                     list.add("I am value " + integer);
@@ -288,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Observable.just(1, 3, 2, 2, 3, 1, 1, 2, 3)
-                        .distinct()
+                        .distinct()//distinct去重
                         .subscribe(new Consumer<Integer>() {
                             @Override
                             public void accept(Integer integer) throws Exception {
@@ -303,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Observable.just(1, 10, -12, 23, -333, 0)
+                        //filter过滤
                         .filter(new Predicate<Integer>() {
                             @Override
                             public boolean test(Integer integer) throws Exception {
@@ -323,7 +327,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Observable.just(1, 2, 3, 4, 5)
-                        .buffer(2, 1)//将原来的数，第一次从头开始读两个数(count),第二次从头开始，跳过1个数(skip)，读两个数，第三次从头开始，跳过2个数（skip*(size - 1))，读两个数...
+                        .buffer(2, 1)
+                        //将原来的数，第一次从头开始读两个数(count),第二次从头开始，跳过1个数(skip)
+                        // ，读两个数，第三次从头开始，跳过2个数（skip*(size - 1))，读两个数...直到读到最后一个数
                         .subscribe(new Consumer<List<Integer>>() {
                             @Override
                             public void accept(List<Integer> integer) throws Exception {
@@ -343,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 Observable.timer(3, TimeUnit.SECONDS)
+                        //延迟执行任务
                         .subscribe(new Consumer<Long>() {
                             @Override
                             public void accept(Long l) throws Exception {
@@ -359,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
+                    //允许延迟执行重复任务
                     disposable = Observable.interval(3, 3, TimeUnit.SECONDS)
                             .subscribe(new Consumer<Long>() {
                                 @Override
@@ -381,6 +389,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
                     disposable = Observable.just(1, 2, 3, 4, 5)
+                            //允许在发射数据的时候做一些事情
                             .doOnNext(new Consumer<Integer>() {
                                 @Override
                                 public void accept(Integer integer) throws Exception {
@@ -418,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
                     disposable = Observable.just(1, 2, 3, 4, 5)
-                            .skip(2)
+                            .skip(2)//跳过n个数据
                             .subscribe(new Consumer<Integer>() {
                                 @Override
                                 public void accept(Integer l) throws Exception {
@@ -448,7 +457,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
-                if (disposable == null) {
+                if (disposable == null) {//最多取n个数据
                     disposable = Observable.just(1, 2, 3, 4, 5)
                             .take(2)
                             .subscribe(new Consumer<Integer>() {
@@ -481,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
-                    Single.just(1)
+                    Single.just(1)//single表示只接受一个数据，singleObserver表示onSuccess与onError两者只会执行其中一个
                             .subscribe(new SingleObserver<Integer>() {
                                 @Override
                                 public void onSubscribe(Disposable d) {
@@ -572,7 +581,8 @@ public class MainActivity extends AppCompatActivity {
                     Observable<Integer> observable = Observable.defer(new Callable<ObservableSource<? extends Integer>>() {
                         @Override
                         public ObservableSource<? extends Integer> call() throws Exception {
-                            return Observable.just(1, 2, 3, 4, 5);//每次订阅都会新生成一个Observable，如果没有被订阅，就不会生成
+                            return Observable.just(1, 2, 3, 4, 5);
+                            //每次订阅都会新生成一个Observable，如果没有被订阅，就不会生成
                         }
                     });
                     observable.subscribe(new Observer<Integer>() {
@@ -612,7 +622,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
                     disposable = Observable.just(1, 2, 3, 4, 5)
-                            .last(4)
+                            .last(1)//如果数据没有发射，则将默认项作为实际项发出，否则只发射数据的最后一项
                             .subscribe(new Consumer<Integer>() {
                                 @Override
                                 public void accept(Integer integer) throws Exception {
@@ -642,7 +652,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
                     Observable.merge(Observable.just(1, 2, 3, 4, 5), Observable.just(6, 7, 8, 9))
-                            //相同类型的才能够合并
+                            //相同类型的才能够合并，合并两个数据，并发射出来
                             .subscribe(new Consumer<Integer>() {
 
                                 @Override
@@ -666,7 +676,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
-                    Observable.just(1, 2, 3, 4, 5)//合并所有数据
+                    Observable.just(1, 2, 3, 4, 5)//合并所有数据，并计算结果，然后只输出结果
                             .reduce(new BiFunction<Integer, Integer, Integer>() {
                                 @Override
                                 public Integer apply(Integer integer, Integer integer2) throws Exception {
@@ -696,7 +706,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
-                    Observable.just(1, 2, 3, 4, 5)//合并所有数据
+                    Observable.just(1, 2, 3, 4, 5)//合并所有数据，计算结果，并输出过程中的结果
                             .scan(new BiFunction<Integer, Integer, Integer>() {
                                 @Override
                                 public Integer apply(Integer integer, Integer integer2) throws Exception {
@@ -726,9 +736,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("TAG", "l = " + System.currentTimeMillis());
                 if (disposable == null) {
-                    Observable.interval(1, TimeUnit.SECONDS)//
-                            .take(15)
+                    Observable.interval(1, TimeUnit.SECONDS)//没隔1s执行一次
+                            .take(15)//最多只执行15次
                             .window(5, TimeUnit.SECONDS)
+                            //每5s作为一个窗口内容，不同的窗口使用不同的observable
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Consumer<Observable<Long>>() {
